@@ -48,9 +48,10 @@ def preprocess_image(img_path, target_size=(224, 224)):
 
 # ------------------ Main Prediction Function ------------------
 def predict_disease(img_path):
+    """Return (friendly_name, confidence, treatment_summary, raw_class_key)."""
     # STEP 1: Pre-Validation for Leaf Detection
     if not is_leaf_image(img_path):
-        return "Invalid image. Please upload a crop leaf photo.", 0.0, "No treatment info – not a valid crop image."
+        return "Invalid image. Please upload a crop leaf photo.", 0.0, "No treatment info – not a valid crop image.", None
 
     # STEP 2: Crop Disease Prediction
     try:
@@ -58,14 +59,19 @@ def predict_disease(img_path):
         prediction = disease_model.predict(img)[0]
     except Exception as e:
         print(f" Prediction failed: {e}")
-        return "Invalid image. Please upload a valid crop leaf photo.", 0.0, "No treatment info – could not process the image."
+        return "Invalid image. Please upload a valid crop leaf photo.", 0.0, "No treatment info – could not process the image.", None
 
     predicted_index = np.argmax(prediction)
     predicted_class = class_labels[str(predicted_index)]
     confidence = round(100 * prediction[predicted_index], 2)
 
     # STEP 3: Friendly Output Mapping
-    friendly_name = disease_info.get(predicted_class, {}).get("name", predicted_class)
-    treatment = disease_info.get(predicted_class, {}).get("treatment", "Consult your local agriculture expert.")
+    info = disease_info.get(predicted_class, {})
+    friendly_name = info.get("name", predicted_class)
+    treatment_steps = info.get("treatment", [])
+    if isinstance(treatment_steps, list):
+        treatment = treatment_steps[0] if treatment_steps else "Consult your local agriculture expert."
+    else:
+        treatment = treatment_steps or "Consult your local agriculture expert."
 
-    return friendly_name, confidence, treatment
+    return friendly_name, confidence, treatment, predicted_class

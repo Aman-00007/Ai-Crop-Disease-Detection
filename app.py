@@ -1,12 +1,14 @@
 # app.py
 
-from flask import Flask, render_template, session, redirect, url_for, request
+from flask import Flask, render_template, session, redirect, url_for, request, abort
 from werkzeug.utils import secure_filename
 from auth import auth
 from db import init_db, create_connection
 from predict import predict_disease
+from treatments import disease_info
 from datetime import datetime
 import os
+import uuid
 
 # === Flask App Initialization ===
 app = Flask(__name__)
@@ -57,29 +59,71 @@ def new_test():
     prediction = None
     treatment = None
     image_filename = None
+    confidence = None
+    test_id = None
 
     if request.method == 'POST':
-        file = request.files['image']
-        if file:
-            image_filename = secure_filename(file.filename)
+        file = request.files.get('image')
+        if file and file.filename:
+            # Unique filename to avoid collisions/overwrites
+            ext = os.path.splitext(secure_filename(file.filename))[1].lower()
+            image_filename = f"{uuid.uuid4().hex}{ext}"
             image_path = os.path.join(UPLOAD_FOLDER, image_filename)
             file.save(image_path)
 
             # Call AI Model to Predict
-            predicted_class, confidence, treatment = predict_disease(image_path)
-            prediction = f"{predicted_class} ({confidence}% confidence)"
+            predicted_class, confidence, treatment, raw_key = predict_disease(image_path)
+            prediction = f"{predicted_class}"
 
             # Save to Database
             conn = create_connection()
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO tests (user_id, image_path, prediction, treatment, tested_at)
-                VALUES (?, ?, ?, ?, ?)
-            ''', (session['user_id'], image_filename, predicted_class, treatment, datetime.now()))
+                INSERT INTO tests (user_id, image_path, prediction, treatment, confidence, tested_at)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (session['user_id'], image_filename, predicted_class, treatment, confidence, datetime.now()))
             conn.commit()
+            test_id = cursor.lastrowid
             conn.close()
 
-    return render_template('new_test.html', prediction=prediction, treatment=treatment, image_filename=image_filename)
+    return render_template('new_test.html', prediction=prediction, treatment=treatment,
+                           image_filename=image_filename, confidence=confidence, test_id=test_id)
+
+# ------------------ FULL DISEASE REPORT ------------------
+@app.route('/report/<int:test_id>')
+def report(test_id):
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+
+    conn = create_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM tests WHERE id = ? AND user_id = ?', (test_id, session['user_id']))
+    test = cursor.fetchone()
+    conn.close()
+
+    if test is None:
+        abort(404)
+
+    # Map the stored friendly prediction back to a disease_info entry
+    info = None
+    for key, value in disease_info.items():
+        if value.get("name") == test['prediction']:
+            info = value
+            break
+
+    if info is None:
+        info = {
+            "name": test['prediction'],
+            "severity": "Unknown",
+            "description": "No detailed information is available for this result.",
+            "symptoms": ["N/A"],
+            "causes": ["N/A"],
+            "prevention": ["Consult your local agriculture expert."],
+            "treatment": [test['treatment']],
+            "organic_options": ["Consult your local agriculture expert."],
+        }
+
+    return render_template('report.html', test=test, info=info, confidence=test['confidence'])
 
 # ------------------ TEST HISTORY ------------------
 @app.route('/history')

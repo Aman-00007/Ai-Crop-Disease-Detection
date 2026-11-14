@@ -34,10 +34,17 @@ def init_db():
             image_path TEXT NOT NULL,
             prediction TEXT NOT NULL,
             treatment TEXT NOT NULL,
+            confidence REAL,
             tested_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
     ''')
+
+    # Lightweight migration: add confidence column to older databases
+    cursor.execute("PRAGMA table_info(tests)")
+    columns = [row[1] for row in cursor.fetchall()]
+    if 'confidence' not in columns:
+        cursor.execute("ALTER TABLE tests ADD COLUMN confidence REAL")
 
     conn.commit()
     conn.close()
