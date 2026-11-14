@@ -1,17 +1,151 @@
 {% extends "base.html" %}
 
-{% block title %}Welcome - Crop Disease Detector{% endblock %}
+{% block title %}CropGuard — AI Crop Disease Detection{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1 class="display-4 fw-bold text-success mb-4">🌾 AI-Powered Crop Disease Detection</h1>
-    <p class="lead mb-4">Empowering farmers with AI to detect plant diseases early and improve crop yield — fast, accurate, and accessible!</p>
+<!-- Hero -->
+<section class="hero">
+    <div class="container hero-inner">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="hero-eyebrow"><i class="bi bi-stars"></i> Powered by YOLOv8 + MobileNetV2</span>
+                <h1>Detect crop diseases <span class="accent">before they spread</span></h1>
+                <p class="lead">Upload a single leaf photo and get an instant AI diagnosis with confidence score and a complete, actionable treatment plan.</p>
 
-    <img src="https://img.freepik.com/free-photo/plant-biologist-working-with-digital-tablet-leafy-greens-hydroponic-greenhouse_482257-41370.jpg" class="img-fluid rounded shadow mb-4" style="max-height: 350px;" alt="Agriculture Image">
+                <div class="hero-actions">
+                    <a href="{{ url_for('auth.signup') }}" class="btn-cg btn-cg-primary btn-cg-lg">
+                        <i class="bi bi-rocket-takeoff"></i> Get Started Free
+                    </a>
+                    <a href="{{ url_for('auth.login') }}" class="btn-cg btn-cg-ghost btn-cg-lg">
+                        <i class="bi bi-box-arrow-in-right"></i> Log In
+                    </a>
+                </div>
 
-    <div class="d-grid gap-3 col-6 mx-auto">
-        <a href="{{ url_for('auth.signup') }}" class="btn btn-success btn-lg">🌱 Get Started - Sign Up</a>
-        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-success btn-lg">🔐 Already a Member? Log In</a>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="num">38</div>
+                        <div class="lbl">Disease Classes</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="num">94%+</div>
+                        <div class="lbl">Accuracy</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="num">&lt;2s</div>
+                        <div class="lbl">Diagnosis Time</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=80" alt="Healthy crop leaves">
+                    <div class="hero-float f1">
+                        <span class="dot"><i class="bi bi-check2-circle text-success"></i></span>
+                        Leaf verified
+                    </div>
+                    <div class="hero-float f2">
+                        <span class="dot"><i class="bi bi-graph-up-arrow text-success"></i></span>
+                        94.2% confidence
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<!-- Features -->
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div class="kicker">How it works</div>
+            <h2>Three steps to a healthier crop</h2>
+            <p>From photo to full treatment report in seconds — no agronomy degree required.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card fade-up">
+                    <div class="feature-icon"><i class="bi bi-camera"></i></div>
+                    <h3>1. Upload a leaf photo</h3>
+                    <p>Drag and drop or select any clear photo of a crop leaf from your device.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card fade-up delay-1">
+                    <div class="feature-icon"><i class="bi bi-cpu"></i></div>
+                    <h3>2. AI analyses it</h3>
+                    <p>YOLOv8 verifies it's a real leaf, then MobileNetV2 classifies the disease across 38 classes.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card fade-up delay-2">
+                    <div class="feature-icon"><i class="bi bi-clipboard2-pulse"></i></div>
+                    <h3>3. Get a full report</h3>
+                    <p>Symptoms, causes, prevention and step-by-step treatment — plus organic options.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits -->
+<section class="section pt-0">
+    <div class="container">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-5">
+                <div class="section-head text-start mb-0" style="margin:0;">
+                    <div class="kicker">Why CropGuard</div>
+                    <h2>Built for real farmers, not just labs</h2>
+                    <p>Everything you need to act on a diagnosis immediately — no jargon, no guesswork.</p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                            <h3>Leaf verification</h3>
+                            <p>Rejects non-leaf images so you never get a false diagnosis.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="bi bi-journal-medical"></i></div>
+                            <h3>Detailed reports</h3>
+                            <p>Full symptom, cause and treatment breakdown for every disease.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="bi bi-clock-history"></i></div>
+                            <h3>Test history</h3>
+                            <p>Every diagnosis saved so you can track crop health over time.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="bi bi-leaf"></i></div>
+                            <h3>Organic options</h3>
+                            <p>Natural treatment alternatives alongside conventional advice.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section pt-0">
+    <div class="container">
+        <div class="report-hero text-center">
+            <h1 class="mb-3">Ready to protect your harvest?</h1>
+            <p class="mb-4" style="color:rgba(255,255,255,.8);max-width:520px;margin:0 auto 1.5rem;">Create a free account and run your first AI crop disease test in under a minute.</p>
+            <a href="{{ url_for('auth.signup') }}" class="btn-cg btn-cg-primary btn-cg-lg">
+                <i class="bi bi-rocket-takeoff"></i> Create Free Account
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}

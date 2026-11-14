@@ -1,41 +1,67 @@
 {% extends "base.html" %}
 
-{% block title %}My Profile - Crop Disease Detector{% endblock %}
+{% block title %}My Profile — CropGuard{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <div class="card shadow border-success">
-      <div class="card-header bg-success text-white text-center">
-        <h3>👤 My Profile</h3>
-      </div>
-      <div class="card-body">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-        <table class="table table-bordered">
-          <tr>
-            <th scope="row">🧑 Name</th>
-            <td>{{ user['name'] }}</td>
-          </tr>
-          <tr>
-            <th scope="row">📧 Email</th>
-            <td>{{ user['email'] }}</td>
-          </tr>
-          <tr>
-            <th scope="row">📍 Location</th>
-            <td>{{ user['location'] or 'N/A' }}</td>
-          </tr>
-          <tr>
-            <th scope="row">📅 Joined On</th>
-            <td>{{ user['created_at'] }}</td>
-          </tr>
-        </table>
+            <div class="profile-head mb-4 fade-up">
+                <div class="profile-avatar">{{ user['name'][0]|upper }}</div>
+                <div>
+                    <h2>{{ user['name'] }}</h2>
+                    <p><i class="bi bi-envelope me-1"></i>{{ user['email'] }}</p>
+                </div>
+            </div>
 
-        <div class="text-end">
-          <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success">🔙 Back to Dashboard</a>
+            <div class="panel fade-up delay-1">
+                <div class="panel-head">
+                    <div class="feature-icon mb-0" style="width:44px;height:44px;font-size:1.1rem;"><i class="bi bi-person-vcard"></i></div>
+                    <h3>Account details</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="detail-row">
+                        <div class="dr-icon"><i class="bi bi-person"></i></div>
+                        <div>
+                            <div class="dr-label">Full name</div>
+                            <div class="dr-value">{{ user['name'] }}</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="dr-icon"><i class="bi bi-envelope"></i></div>
+                        <div>
+                            <div class="dr-label">Email address</div>
+                            <div class="dr-value">{{ user['email'] }}</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="dr-icon"><i class="bi bi-geo-alt"></i></div>
+                        <div>
+                            <div class="dr-label">Location</div>
+                            <div class="dr-value">{{ user['location'] or 'Not provided' }}</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="dr-icon"><i class="bi bi-calendar3"></i></div>
+                        <div>
+                            <div class="dr-label">Member since</div>
+                            <div class="dr-value">{{ user['created_at'] }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
+                <a href="{{ url_for('dashboard') }}" class="btn-cg btn-cg-ghost">
+                    <i class="bi bi-arrow-left"></i> Back to Dashboard
+                </a>
+                <a href="{{ url_for('new_test') }}" class="btn-cg btn-cg-primary">
+                    <i class="bi bi-camera"></i> New Test
+                </a>
+            </div>
+
         </div>
-
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}

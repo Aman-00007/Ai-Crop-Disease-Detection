@@ -1,38 +1,39 @@
 {% extends "base.html" %}
 
-{% block title %}Login - Crop Disease Detector{% endblock %}
+{% block title %}Log In — CropGuard{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-5">
-    <div class="card shadow">
-      <div class="card-header bg-success text-white text-center">
-        <h3>🔐 Log In to Your Account</h3>
-      </div>
-      <div class="card-body">
+<div class="auth-wrap">
+    <div class="auth-card fade-up">
+        <div class="auth-icon"><i class="bi bi-shield-lock"></i></div>
+        <h2>Welcome back</h2>
+        <p class="sub">Log in to continue protecting your crops</p>
 
         <form method="POST" action="{{ url_for('auth.login') }}">
-          <div class="mb-3">
-            <label for="email" class="form-label">📧 Email Address</label>
-            <input type="email" class="form-control" id="email" name="email" required placeholder="you@example.com">
-          </div>
+            <div class="mb-3">
+                <label for="email" class="form-label-cg">Email address</label>
+                <div class="input-group-cg">
+                    <i class="bi bi-envelope icon"></i>
+                    <input type="email" class="input-cg" id="email" name="email" required placeholder="you@example.com">
+                </div>
+            </div>
 
-          <div class="mb-3">
-            <label for="password" class="form-label">🔑 Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
+            <div class="mb-4">
+                <label for="password" class="form-label-cg">Password</label>
+                <div class="input-group-cg">
+                    <i class="bi bi-lock icon"></i>
+                    <input type="password" class="input-cg" id="password" name="password" required placeholder="••••••••">
+                </div>
+            </div>
 
-          <div class="d-grid">
-            <button type="submit" class="btn btn-success">Log In</button>
-          </div>
+            <button type="submit" class="btn-cg btn-cg-primary w-100">
+                <i class="bi bi-box-arrow-in-right"></i> Log In
+            </button>
         </form>
 
-        <div class="text-center mt-3">
-          Don’t have an account yet? <a href="{{ url_for('auth.signup') }}">Sign Up</a>
+        <div class="text-center mt-4" style="font-size:.9rem;color:var(--ink-500);">
+            Don't have an account? <a href="{{ url_for('auth.signup') }}" style="color:var(--green-700);font-weight:700;">Sign up free</a>
         </div>
-
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}

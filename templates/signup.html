@@ -1,53 +1,63 @@
 {% extends "base.html" %}
 
-{% block title %}Sign Up - Crop Disease Detector{% endblock %}
+{% block title %}Sign Up — CropGuard{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <div class="card shadow">
-      <div class="card-header bg-success text-white text-center">
-        <h3>🌱 Create Your Account</h3>
-      </div>
-      <div class="card-body">
+<div class="auth-wrap">
+    <div class="auth-card fade-up">
+        <div class="auth-icon"><i class="bi bi-person-plus"></i></div>
+        <h2>Create your account</h2>
+        <p class="sub">Start detecting crop diseases in seconds</p>
 
         <form method="POST" action="{{ url_for('auth.signup') }}">
-          <div class="mb-3">
-            <label for="name" class="form-label">👤 Full Name</label>
-            <input type="text" class="form-control" id="name" name="name" required placeholder="Ali Hamed">
-          </div>
+            <div class="mb-3">
+                <label for="name" class="form-label-cg">Full name</label>
+                <div class="input-group-cg">
+                    <i class="bi bi-person icon"></i>
+                    <input type="text" class="input-cg" id="name" name="name" required placeholder="Aman Rawat">
+                </div>
+            </div>
 
-          <div class="mb-3">
-            <label for="email" class="form-label">📧 Email Address</label>
-            <input type="email" class="form-control" id="email" name="email" required placeholder="you@example.com">
-          </div>
+            <div class="mb-3">
+                <label for="email" class="form-label-cg">Email address</label>
+                <div class="input-group-cg">
+                    <i class="bi bi-envelope icon"></i>
+                    <input type="email" class="input-cg" id="email" name="email" required placeholder="you@example.com">
+                </div>
+            </div>
 
-          <div class="mb-3">
-            <label for="location" class="form-label">📍 Location (Optional)</label>
-            <input type="text" class="form-control" id="location" name="location" placeholder="e.g., Sohar, Oman">
-          </div>
+            <div class="mb-3">
+                <label for="location" class="form-label-cg">Location <span style="color:var(--ink-300);font-weight:500;">(optional)</span></label>
+                <div class="input-group-cg">
+                    <i class="bi bi-geo-alt icon"></i>
+                    <input type="text" class="input-cg" id="location" name="location" placeholder="e.g., Dehradun, India">
+                </div>
+            </div>
 
-          <div class="mb-3">
-            <label for="password" class="form-label">🔒 Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-          </div>
+            <div class="mb-3">
+                <label for="password" class="form-label-cg">Password</label>
+                <div class="input-group-cg">
+                    <i class="bi bi-lock icon"></i>
+                    <input type="password" class="input-cg" id="password" name="password" required placeholder="••••••••">
+                </div>
+            </div>
 
-          <div class="mb-3">
-            <label for="confirm" class="form-label">🔒 Confirm Password</label>
-            <input type="password" class="form-control" id="confirm" required>
-          </div>
+            <div class="mb-4">
+                <label for="confirm" class="form-label-cg">Confirm password</label>
+                <div class="input-group-cg">
+                    <i class="bi bi-lock-fill icon"></i>
+                    <input type="password" class="input-cg" id="confirm" required placeholder="••••••••">
+                </div>
+            </div>
 
-          <div class="d-grid">
-            <button type="submit" class="btn btn-success">✅ Sign Up</button>
-          </div>
+            <button type="submit" class="btn-cg btn-cg-primary w-100">
+                <i class="bi bi-check2-circle"></i> Create Account
+            </button>
         </form>
 
-        <div class="text-center mt-3">
-          Already have an account? <a href="{{ url_for('auth.login') }}">Log In</a>
+        <div class="text-center mt-4" style="font-size:.9rem;color:var(--ink-500);">
+            Already have an account? <a href="{{ url_for('auth.login') }}" style="color:var(--green-700);font-weight:700;">Log in</a>
         </div>
-
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}

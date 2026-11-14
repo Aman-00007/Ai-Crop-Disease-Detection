@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}{{ info.name }} — Full Report — CropGuard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Back link -->
+    <a href="{{ url_for('history') }}" class="btn-cg btn-cg-ghost btn-cg-sm mb-4">
+        <i class="bi bi-arrow-left"></i> Back to History
+    </a>
+
+    <!-- Report hero -->
+    <div class="report-hero mb-4 fade-up">
+        <div class="row align-items-center g-4">
+            <div class="col-md-4">
+                {% if test and test['image_path'] %}
+                <div class="report-img">
+                    <img src="{{ url_for('static', filename='uploads/' + test['image_path']) }}" alt="Analysed leaf">
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <span class="hero-eyebrow"><i class="bi bi-file-earmark-medical"></i> Disease Report</span>
+                <h1 class="mb-3">{{ info.name }}</h1>
+
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    {% if confidence %}
+                    <div>
+                        <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);font-weight:700;">Confidence</div>
+                        <div style="font-size:1.5rem;font-weight:800;color:#fff;">{{ confidence }}%</div>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);font-weight:700;">Severity</div>
+                        <div class="mt-1">
+                            <span class="sev sev-{{ (info.severity or 'none')|lower }}">{{ info.severity or 'Unknown' }}</span>
+                        </div>
+                    </div>
+                    {% if test and test['tested_at'] %}
+                    <div>
+                        <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.6);font-weight:700;">Tested</div>
+                        <div style="font-weight:700;color:#fff;">{{ test['tested_at'] }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="info-block mb-4 fade-up delay-1">
+        <div class="ib-head">
+            <div class="ib-icon"><i class="bi bi-info-circle"></i></div>
+            <h4>About this disease</h4>
+        </div>
+        <p style="color:var(--ink-700);margin:0;">{{ info.description }}</p>
+    </div>
+
+    <!-- Symptoms + Causes -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="info-block h-100 fade-up delay-1">
+                <div class="ib-head">
+                    <div class="ib-icon" style="background:#fef3c7;color:#92400e;"><i class="bi bi-exclamation-triangle"></i></div>
+                    <h4>Symptoms</h4>
+                </div>
+                <ul class="check-list">
+                    {% for s in info.symptoms %}<li>{{ s }}</li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-block h-100 fade-up delay-2">
+                <div class="ib-head">
+                    <div class="ib-icon" style="background:#e0f2fe;color:#075985;"><i class="bi bi-bug"></i></div>
+                    <h4>Causes</h4>
+                </div>
+                <ul class="check-list">
+                    {% for c in info.causes %}<li>{{ c }}</li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Treatment steps -->
+    <div class="info-block mb-4 fade-up delay-2">
+        <div class="ib-head">
+            <div class="ib-icon" style="background:#dcfce7;color:#166534;"><i class="bi bi-clipboard2-pulse"></i></div>
+            <h4>Recommended treatment</h4>
+        </div>
+        <ol class="step-list">
+            {% for t in info.treatment %}<li>{{ t }}</li>{% endfor %}
+        </ol>
+    </div>
+
+    <!-- Prevention + Organic -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="info-block h-100 fade-up delay-2">
+                <div class="ib-head">
+                    <div class="ib-icon" style="background:#dcfce7;color:#166534;"><i class="bi bi-shield-check"></i></div>
+                    <h4>Prevention</h4>
+                </div>
+                <ul class="check-list">
+                    {% for p in info.prevention %}<li>{{ p }}</li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="info-block h-100 fade-up delay-3">
+                <div class="ib-head">
+                    <div class="ib-icon" style="background:#dcfce7;color:#166534;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" style="display:block;">
+                            <path d="M8 15c-4.418 0-8-3.134-8-7s3.582-7 8-7c.5 0 1 .046 1.5.135C6.5 2.5 5 5.5 5 9c0 2.5 1 5 2.5 6.5.166.5.333 1 .5 1.5z"/>
+                            <path d="M9.5 1.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 0 1H10v.5a.5.5 0 0 1-1 0V4h-.5a.5.5 0 0 1 0-1H9V2.5a.5.5 0 0 1 .5-.5z"/>
+                        </svg>
+                    </div>
+                    <h4>Organic options</h4>
+                </div>
+                <ul class="check-list">
+                    {% for o in info.organic_options %}<li>{{ o }}</li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="d-flex flex-wrap gap-3 justify-content-center mt-5">
+        <a href="{{ url_for('new_test') }}" class="btn-cg btn-cg-primary">
+            <i class="bi bi-camera"></i> Run Another Test
+        </a>
+        <a href="{{ url_for('history') }}" class="btn-cg btn-cg-ghost">
+            <i class="bi bi-clock-history"></i> View All Tests
+        </a>
+    </div>
+
+</div>
+{% endblock %}

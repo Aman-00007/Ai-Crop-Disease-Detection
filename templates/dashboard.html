@@ -1,42 +1,97 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - Crop Disease Detector{% endblock %}
+{% block title %}Dashboard — CropGuard{% endblock %}
 
 {% block content %}
-<div class="text-center">
-  <h2 class="text-success fw-bold mb-3">🌿 Welcome, {{ name }}!</h2>
-  <p class="lead mb-4">Use the navigation bar to:</p>
-
-  <div class="row justify-content-center g-4">
-    <div class="col-md-4">
-      <div class="card border-success shadow">
-        <div class="card-body">
-          <h5 class="card-title">🧪 New Disease Test</h5>
-          <p class="card-text">Upload a crop leaf image to detect disease using AI.</p>
-          <a href="{{ url_for('new_test') }}" class="btn btn-success">Start Test</a>
-        </div>
-      </div>
+<div class="container py-4">
+    <div class="mb-4 fade-up">
+        <h1 style="font-size:clamp(1.6rem,3vw,2.2rem);">Welcome back, {{ name }} 👋</h1>
+        <p style="color:var(--ink-500);margin:0;">Here's your crop health overview.</p>
     </div>
 
-    <div class="col-md-4">
-      <div class="card border-success shadow">
-        <div class="card-body">
-          <h5 class="card-title">📊 My Test History</h5>
-          <p class="card-text">View all your previously tested results and AI diagnoses.</p>
-          <a href="{{ url_for('history') }}" class="btn btn-success">View History</a>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="stat-card fade-up">
+                <div class="sc-icon"><i class="bi bi-camera"></i></div>
+                <h4>New Disease Test</h4>
+                <p>Upload a crop leaf photo and get an instant AI diagnosis with a full treatment report.</p>
+                <a href="{{ url_for('new_test') }}" class="btn-cg btn-cg-primary">
+                    <i class="bi bi-plus-lg"></i> Start Test
+                </a>
+            </div>
         </div>
-      </div>
+
+        <div class="col-md-4">
+            <div class="stat-card fade-up delay-1">
+                <div class="sc-icon"><i class="bi bi-clock-history"></i></div>
+                <h4>Test History</h4>
+                <p>Review all your previous diagnoses, confidence scores and treatment plans.</p>
+                <a href="{{ url_for('history') }}" class="btn-cg btn-cg-ghost">
+                    <i class="bi bi-arrow-right"></i> View History
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="stat-card fade-up delay-2">
+                <div class="sc-icon"><i class="bi bi-person-circle"></i></div>
+                <h4>My Profile</h4>
+                <p>View and manage your account details and personal information.</p>
+                <a href="{{ url_for('profile') }}" class="btn-cg btn-cg-ghost">
+                    <i class="bi bi-arrow-right"></i> View Profile
+                </a>
+            </div>
+        </div>
     </div>
 
-    <div class="col-md-4">
-      <div class="card border-success shadow">
-        <div class="card-body">
-          <h5 class="card-title">👤 My Profile</h5>
-          <p class="card-text">View and manage your personal details.</p>
-          <a href="{{ url_for('profile') }}" class="btn btn-success">View Profile</a>
+    <div class="row g-4 mt-1">
+        <div class="col-lg-8">
+            <div class="panel fade-up delay-2">
+                <div class="panel-head">
+                    <div class="feature-icon mb-0" style="width:44px;height:44px;font-size:1.1rem;"><i class="bi bi-lightbulb"></i></div>
+                    <h3>Quick tips for accurate results</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="check-list">
+                        <li>Use a clear, well-lit photo of a single leaf.</li>
+                        <li>Fill the frame with the leaf — avoid distant shots.</li>
+                        <li>Capture both healthy and affected areas if possible.</li>
+                        <li>Avoid blurry, dark or heavily shadowed images.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="col-lg-4">
+            <div class="panel fade-up delay-3 h-100">
+                <div class="panel-head">
+                    <div class="feature-icon mb-0" style="width:44px;height:44px;font-size:1.1rem;"><i class="bi bi-cpu"></i></div>
+                    <h3>Model info</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="detail-row">
+                        <div class="dr-icon"><i class="bi bi-diagram-3"></i></div>
+                        <div>
+                            <div class="dr-label">Classifier</div>
+                            <div class="dr-value">MobileNetV2</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="dr-icon"><i class="bi bi-bounding-box"></i></div>
+                        <div>
+                            <div class="dr-label">Leaf check</div>
+                            <div class="dr-value">YOLOv8</div>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="dr-icon"><i class="bi bi-collection"></i></div>
+                        <div>
+                            <div class="dr-label">Classes</div>
+                            <div class="dr-value">38 diseases</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}
